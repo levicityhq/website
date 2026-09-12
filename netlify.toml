@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+# React Router handles dashboard routes in the browser, including direct visits
+# to project and invoice URLs.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

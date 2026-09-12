@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-sans: 'Syne', ui-sans-serif, system-ui, sans-serif;
@@ -10,4 +10,131 @@
   --color-ink: #080808;
   --color-muted: #929292;
   --color-divider: #242424;
+  --color-surface: #101010;
+  --color-input: #111111;
+  --color-hover: #17130b;
+  --color-error: #20130f;
+  --color-error-border: #633e31;
+}
+
+:root { color-scheme: dark; }
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-canvas: #ffffff;
+  --color-foreground: #111111;
+  --color-accent: #653500;
+  --color-accent-hover: #482600;
+  --color-ink: #ffffff;
+  --color-muted: #353535;
+  --color-divider: #a6a6a6;
+  --color-surface: #f0f0f0;
+  --color-input: #ffffff;
+  --color-hover: #e1e1e1;
+  --color-error: #fff5f3;
+  --color-error-border: #9e3022;
+}
+
+@layer components {
+  .workspace { @apply flex min-h-svh; }
+  .workspace-sidebar { @apply sticky top-0 flex h-svh w-[244px] shrink-0 flex-col border-r border-divider bg-canvas px-5 py-7 max-[760px]:hidden; }
+  .workspace-sidebar.is-open { @apply max-[760px]:fixed max-[760px]:z-40 max-[760px]:flex; }
+  .workspace-logo { @apply flex items-center gap-2.5 text-[22px] font-extrabold tracking-[-.04em]; }
+  .workspace-logo > span { @apply grid size-[30px] place-items-center rounded-md bg-accent text-[17px] text-ink; }
+  .organization-control { @apply my-9 mb-6; }
+  .organization-control label, .eyebrow { @apply font-mono text-[10px] tracking-[.08em] text-muted; }
+  .organization-control label { @apply mb-2.5 block uppercase; }
+  .create-workspace-action { @apply mt-3.5 block; }
+  .workspace-sidebar nav { @apply grid gap-1.5; }
+  .workspace-sidebar nav a { @apply flex gap-3 rounded-md p-3 text-sm text-muted hover:bg-hover hover:text-accent; }
+  .workspace-sidebar nav a.active { @apply bg-hover text-accent; }
+  .sidebar-bottom { @apply mt-auto pt-6; }
+  .sidebar-bottom .eyebrow { @apply text-[8px]; }
+  .sidebar-bottom p { @apply mt-2 text-xs text-muted; }
+  .workspace-body { @apply min-w-0 flex-1; }
+  .workspace-topbar { @apply flex h-20 items-center justify-between border-b border-divider px-10 font-mono text-[11px] text-muted max-[1100px]:px-6 max-[760px]:h-16 max-[760px]:px-5; }
+  .workspace-main { @apply mx-auto max-w-[1600px] px-10 py-12 max-[1100px]:px-6 max-[1100px]:py-8 max-[760px]:px-5; }
+  .page-heading { @apply mb-11 flex items-center justify-between gap-6 max-[760px]:mb-8 max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-5; }
+  .page-heading h1 { @apply my-3 text-[clamp(26px,3vw,40px)] leading-[1.15] font-extrabold tracking-[-.045em]; }
+  .page-heading p, .empty-state p { @apply text-sm leading-7 text-muted; }
+  .button { @apply cursor-pointer whitespace-nowrap rounded-md border border-divider bg-surface px-4 py-2.5 font-mono text-[11px] hover:border-accent disabled:cursor-wait disabled:opacity-50; }
+  .button.primary { @apply border-accent bg-accent font-medium text-ink hover:bg-accent-hover; }
+  .workspace :is(button,a,input,select,textarea):focus-visible, .invoice-panel :is(button,a,input,select,textarea,summary):focus-visible { @apply outline-2 outline-offset-4 outline-accent; }
+  .section-heading { @apply mb-5 flex items-center justify-between gap-4 max-[760px]:flex-wrap max-[760px]:items-start; }
+  .section-heading h2 { @apply text-base font-bold; }
+  .count { @apply ml-2 font-mono text-[11px] text-muted; }
+  .text-action { @apply cursor-pointer font-mono text-[11px] text-accent hover:underline; }
+  .project-section { @apply mb-11; }
+  .project-cost-totals { @apply mb-11 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3; }
+  .project-cost-totals > div { @apply rounded-lg border border-divider bg-surface p-6; }
+  .project-cost-totals strong { @apply mt-3 block font-mono text-3xl font-medium tabular-nums text-accent; }
+  .project-category-costs { @apply mb-11; }
+  .project-grid, .skeleton-grid { @apply grid grid-cols-3 gap-4 max-[1100px]:grid-cols-2 max-[760px]:grid-cols-1; }
+  .project-card { @apply rounded-lg border border-divider bg-surface p-[22px] transition-colors hover:border-accent max-[760px]:p-5; }
+  .project-card > div { @apply flex items-center justify-between; }
+  .project-arrow { @apply text-accent; }
+  .project-card h3 { @apply my-6 wrap-anywhere text-lg font-bold max-[760px]:my-4; }
+  .project-card p { @apply border-t border-divider pt-4 font-mono text-[11px] text-muted; }
+  .project-card p strong { @apply font-medium text-foreground; }
+  .project-card p span { @apply float-right text-[10px]; }
+  .filter-label { @apply flex items-center gap-2.5 font-mono text-[10px] text-muted; }
+  .workspace select, .workspace input, .invoice-panel :is(input,select,textarea) { @apply min-w-0 w-full rounded-md border border-divider bg-input px-3 py-2.5 font-mono text-xs text-foreground; }
+  .filter-label select { @apply max-w-[230px]; }
+  .table-scroll { @apply overflow-x-auto rounded-lg border border-divider; }
+  table { @apply w-full border-collapse text-left; }
+  th { @apply whitespace-nowrap bg-surface px-5 py-4 font-mono text-[9px] tracking-[.06em] text-muted uppercase; }
+  td { @apply border-t border-divider p-5 text-xs; }
+  tr:hover td { @apply bg-surface; }
+  .invoice-link { @apply cursor-pointer text-left text-[13px] font-semibold hover:text-accent; }
+  .cell-subtitle { @apply mt-1.5 block font-mono text-[9px] text-muted; }
+  .amount { @apply whitespace-nowrap text-right font-mono tabular-nums; }
+  .received { @apply whitespace-nowrap font-mono text-[10px] text-muted; }
+  .category-tag, .role-tag { @apply inline-block rounded border border-divider px-1.5 py-1 font-mono text-[9px] text-muted; }
+  .unassigned { @apply font-mono text-[10px] text-accent; }
+  .list-footer { @apply mt-[18px] flex items-center justify-between font-mono text-[9px] text-muted; }
+  .empty-state { @apply rounded-lg border border-dashed border-divider px-6 py-12 text-center; }
+  .empty-state h3 { @apply mb-2 text-xl font-bold; }
+  .empty-icon { @apply mb-3 block text-[28px] text-accent; }
+  .error-box { @apply rounded-md border border-error-border bg-error p-4 text-[13px] leading-7; }
+  .error-box button { @apply mt-2.5; }
+  .project-create { @apply mb-8 flex flex-wrap items-end gap-3 rounded-lg border border-divider p-6; }
+  .project-create label { @apply min-w-[180px] flex-1 font-mono text-[11px]; }
+  .project-create input { @apply mt-2 block; }
+  .workspace-message { @apply flex min-h-svh items-center justify-center gap-5 p-6; }
+  .access-card { @apply w-full max-w-[460px] rounded-lg border border-divider p-9; }
+  .access-card h1 { @apply mt-[18px] mb-3 text-[28px] font-extrabold; }
+  .access-card p { @apply mb-6 leading-7 text-muted; }
+  .access-actions { @apply mt-7 flex items-center gap-3; }
+  .access-actions .button { @apply min-h-11 flex-1; }
+  .workspace-create label { @apply mt-6 mb-2 block font-mono text-[11px]; }
+  .workspace-create input { @apply w-full rounded-md border border-divider bg-input px-3 py-[11px] font-mono text-xs text-foreground; }
+  .workspace-create .button { @apply mt-[18px] mr-2.5; }
+  .workspace-create .error-box { @apply mt-[18px]; }
+  .member-invite { @apply mb-7 flex items-end gap-3 rounded-lg border border-divider p-[22px] max-[760px]:flex-col max-[760px]:items-stretch; }
+  .member-invite label { @apply sr-only; }
+  .member-invite input { @apply w-full max-w-[380px] rounded-md border border-divider bg-input px-3 py-[11px] font-mono text-xs text-foreground max-[760px]:max-w-none; }
+  .member-list { @apply rounded-lg border border-divider; }
+  .member-row { @apply flex items-center justify-between gap-[18px] border-t border-divider px-5 py-[18px] first:border-t-0 max-[760px]:flex-col max-[760px]:items-stretch; }
+  .member-row strong, .member-row span { @apply block; }
+  .member-row strong { @apply text-[13px]; }
+  .member-row > div > span { @apply mt-1 block font-mono text-[10px] text-muted; }
+  .organization-profile-page .cl-cardBox { @apply w-full max-w-[900px]; }
+  .skeleton-grid > div { @apply h-[180px] rounded-lg bg-input; }
+  .mobile-menu, .sidebar-backdrop { @apply hidden; }
+  .mobile-menu { @apply max-[760px]:block max-[760px]:p-2 max-[760px]:text-foreground; }
+  .sidebar-backdrop { @apply max-[760px]:fixed max-[760px]:inset-0 max-[760px]:z-30 max-[760px]:block max-[760px]:bg-black/65; }
+  .invoice-panel { @apply fixed top-0 right-0 bottom-0 left-auto z-50 m-0 h-svh max-h-svh w-full max-w-full border-l border-divider bg-canvas text-foreground sm:w-[min(600px,100%)]; }
+  .panel-inner { @apply p-7 max-[760px]:p-5; }
+  .panel-header { @apply mb-6 flex items-center justify-between; }
+  .invoice-panel h2 { @apply wrap-anywhere text-[26px] font-extrabold tracking-[-.035em]; }
+  .panel-subtitle { @apply my-2.5 mb-4 wrap-anywhere text-xs text-muted; }
+  .panel-section { @apply mt-6 border-t border-divider pt-6; }
+  .panel-section h3 { @apply mb-5 font-bold; }
+  .field-grid { @apply grid grid-cols-2 gap-4 max-[760px]:grid-cols-1; }
+  .invoice-panel label { @apply mb-4 block font-mono text-[10px] text-muted capitalize; }
+  .invoice-panel :is(input,select,textarea) { @apply mt-2 block; }
+  .invoice-panel details { @apply text-xs leading-7 text-muted; }
+  .invoice-panel summary { @apply cursor-pointer text-foreground; }
+  .invoice-panel details p { @apply mt-3 wrap-anywhere; }
+  .panel-actions { @apply my-6 flex flex-wrap gap-3; }
 }
